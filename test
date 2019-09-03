@@ -1,0 +1,21 @@
+# -*- coding: utf8 -*-
+from ZWCAD_CONSTANTS import *
+
+from win32com import client
+import pythoncom
+import array
+import pythoncom
+zcad = client.Dispatch("ZWCAD.Application")
+doc = zcad.ActiveDocument
+model = doc.ModelSpace
+excel = client.Dispatch("Excel.Application")
+wb = excel.Workbooks.Open(u'C:\DATA\PROGRAMS\ZWCAD\ИД.xlsx')
+sheet = wb.ActiveSheet
+
+i = 0 
+for cel in [cel[0].value for cel in sheet.Range("A1:A10")]:
+	pnt_start = client.VARIANT(pythoncom.VT_ARRAY | pythoncom.VT_R8,[50.0, 50.0 + i, 0.0])
+	text = model.AddMText(pnt_start , 20, cel)
+	text.Height = 30
+	text.AttachmentPoint = constants.zcAttachmentPointMiddleRight
+	i +=50
